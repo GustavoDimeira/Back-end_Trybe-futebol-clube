@@ -1,5 +1,11 @@
 import * as express from 'express';
 
+import LoginControllerClass from './MSC/controllers/login.controller';
+// import MiddlewareClass from './middleware/middleware.class';
+
+const loginController = new LoginControllerClass();
+// const middlewares = new MiddlewareClass();
+
 class App {
   public app: express.Express;
 
@@ -10,9 +16,14 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+
+    this.app.post(
+      '/login',
+      loginController.login,
+    );
   }
 
-  private config():void {
+  private config(): void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
@@ -24,7 +35,7 @@ class App {
     this.app.use(accessControl);
   }
 
-  public start(PORT: string | number):void {
+  public start(PORT: string | number): void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
   }
 }
