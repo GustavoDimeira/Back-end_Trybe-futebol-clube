@@ -1,6 +1,6 @@
 export interface LoginRes {
   token?: string,
-  mesage?: string,
+  message?: string,
   hasFail: boolean,
 }
 

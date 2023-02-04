@@ -8,9 +8,9 @@ class LoginControllerClass {
 
   public login = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
-    const { hasFail, mesage, token }: LoginRes = await this.loginService.login(email, password);
+    const { hasFail, message, token }: LoginRes = await this.loginService.login(email, password);
     if (hasFail) {
-      res.status(401).json({ mesage });
+      res.status(401).json({ message });
     } else {
       res.status(200).json({ token });
     }

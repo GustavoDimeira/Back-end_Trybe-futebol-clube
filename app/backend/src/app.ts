@@ -1,10 +1,10 @@
 import * as express from 'express';
 
 import LoginControllerClass from './MSC/controllers/login.controller';
-// import MiddlewareClass from './middleware/middleware.class';
+import MiddlewareClass from './middleware/middleware.class';
 
 const loginController = new LoginControllerClass();
-// const middlewares = new MiddlewareClass();
+const middlewares = new MiddlewareClass();
 
 class App {
   public app: express.Express;
@@ -15,10 +15,12 @@ class App {
     this.config();
 
     // Não remover essa rota
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.get('/', (_req, res) => res.json({ ok: true }));
 
     this.app.post(
       '/login',
+      middlewares.email,
+      middlewares.password,
       loginController.login,
     );
   }
