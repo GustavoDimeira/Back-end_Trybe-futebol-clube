@@ -4,7 +4,7 @@ import LoginServiceClass from '../services/login.service';
 import { LoginRes } from '../../interfaces/MSC';
 
 class LoginControllerClass {
-  constructor(private loginService = new LoginServiceClass()) {}
+  constructor(private loginService: LoginServiceClass) {}
 
   public login = async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;

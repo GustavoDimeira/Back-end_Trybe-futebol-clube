@@ -1,9 +1,12 @@
 import * as express from 'express';
 
 import LoginControllerClass from './MSC/controllers/login.controller';
+import LoginServiceClass from './MSC/services/login.service';
+
 import MiddlewareClass from './middleware/middleware.class';
 
-const loginController = new LoginControllerClass();
+const loginService = new LoginServiceClass();
+const loginController = new LoginControllerClass(loginService);
 const middlewares = new MiddlewareClass();
 
 class App {
