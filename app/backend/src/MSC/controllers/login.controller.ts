@@ -15,6 +15,20 @@ class LoginControllerClass {
       res.status(200).json({ token });
     }
   };
+
+  public adminLogin = (req: Request, res: Response): void => {
+    const { headers: { authorization } } = req;
+    if (authorization) {
+      const payLoad = this.loginService.roleValidation(authorization);
+      switch (payLoad?.role) {
+        case 'admin':
+          res.status(200).json({ role: 'admin' });
+          break;
+        default:
+          res.status(401).json({ message: 'Error' });
+      }
+    }
+  };
 }
 
 export default LoginControllerClass;

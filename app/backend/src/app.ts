@@ -23,6 +23,11 @@ class App {
       middlewares.password,
       loginController.login,
     );
+
+    this.app.get(
+      '/login/validate',
+      loginController.adminLogin,
+    );
   }
 
   private config(): void {
