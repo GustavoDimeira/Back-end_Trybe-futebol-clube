@@ -2,7 +2,6 @@ import { DataTypes, Model } from 'sequelize';
 import db from '.';
 
 class User extends Model {
-  // declare <campo>: <tipo>;
   declare id: number;
   declare username: string;
   declare role: string;
@@ -11,7 +10,6 @@ class User extends Model {
 }
 
 User.init({
-  // ... Campos
   id: {
     autoIncrement: true,
     allowNull: false,
@@ -35,7 +33,6 @@ User.init({
     type: DataTypes.STRING,
   },
 }, {
-  // ... Outras configs
   underscored: true,
   sequelize: db,
   modelName: 'User',
