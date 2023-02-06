@@ -8,8 +8,7 @@ class TeamControllerClass {
 
   public getTeams = async (_req: Request, res: Response): Promise<void> => {
     const teams: TeamRes[] = await this.teamService.getTeams();
-    if (teams) res.status(200).json(teams);
-    else res.status(400).json({ message: 'Bad Request' });
+    res.status(200).json(teams);
   };
 
   public getTeam = async (req: Request, res: Response): Promise<void> => {

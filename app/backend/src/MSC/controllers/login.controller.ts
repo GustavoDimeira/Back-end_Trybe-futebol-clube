@@ -27,6 +27,8 @@ class LoginControllerClass {
         default:
           res.status(401).json({ message: 'Error' });
       }
+    } else {
+      res.status(401).json({ message: 'Bad request' });
     }
   };
 }

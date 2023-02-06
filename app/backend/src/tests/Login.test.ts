@@ -65,4 +65,14 @@ describe('Login', () => {
     const result = await request(app).get("/login/validate").set('authorization', token);
     expect(result.body.message).to.be.eq('Error');
   });
+
+  it('Validar com token invalido', async () => {
+    const result = await request(app).get("/login/validate").set('authorization', 'invalido');
+    expect(result.body.message).to.be.eq('Error');
+  });
+
+  it('Valir sem token', async () => {
+    const result = await request(app).get("/login/validate");
+    expect(result.body.message).to.be.eq('Bad request');
+  })
 });
