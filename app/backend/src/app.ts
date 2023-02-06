@@ -51,6 +51,12 @@ const matches = (t: App) => {
     '/matches',
     matchController.getTeamsMatches,
   );
+
+  t.app.post(
+    '/matches',
+    // middlewares.tokenValidation,
+    matchController.addTeamsMatche,
+  );
 };
 
 class App {

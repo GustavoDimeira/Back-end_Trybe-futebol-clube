@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
+import * as jwt from 'jsonwebtoken';
+
+const secret = process.env.JWT_SECRET || 'jwt_secret';
+
 class MiddlewareClass {
   public email = (req: Request, res: Response, next: NextFunction): void => {
     const { body: { email } } = req;
@@ -17,6 +21,13 @@ class MiddlewareClass {
     } else {
       next();
     }
+  };
+
+  public tokenValidation = (req: Request, res: Response, next: NextFunction): void => {
+    const { headers: { authorization } } = req;
+    if (authorization) {
+      if (jwt.verify(authorization, secret)) next();
+    } else res.status(401).json({ message: 'Acess deny' });
   };
 }
 

@@ -5,7 +5,7 @@ import { MatchesRes, TeamRes } from '../../interfaces/MSC';
 
 class MatchServiceClass {
   public getTeamsMatches = async (inProgress: string | undefined): Promise<MatchesRes[]> => {
-    const matches: (MatchesRes)[] = (inProgress) ? (
+    const matches: MatchesRes[] = (inProgress) ? (
       await Matchs.findAll({ where: { inProgress: (inProgress === 'true') } })
     ) : (
       await Matchs.findAll()
@@ -17,6 +17,23 @@ class MatchServiceClass {
       this.makeTeamResponse(matches, match, i, [homeTeam?.teamName, awayTeam?.teamName]);
     });
     return matches;
+  };
+
+  public addTeamsMatche = async (
+    homeTeamId: number,
+    awayTeamId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<{ match?: MatchesRes, fail: boolean }> => {
+    const team1 = await Teams.findOne({ where: { id: homeTeamId } });
+    const team2 = await Teams.findOne({ where: { id: homeTeamId } });
+    if (team1 && team2) {
+      const match = await Matchs.create({
+        homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals, inProgress: true,
+      });
+      console.log(match);
+      return { match, fail: false };
+    } return { fail: true };
   };
 
   private makeTeamResponse = (
