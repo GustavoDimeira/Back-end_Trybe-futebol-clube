@@ -4,10 +4,15 @@ export interface LoginRes {
   hasFail: boolean,
 }
 
-export type TeamRes = {
+export type TeamsRes = {
   id: number,
   teamName: string,
 }[];
+
+export type TeamRes = {
+  id: number,
+  teamName: string,
+};
 
 export interface DbLoginAnswer {
   username?: string,

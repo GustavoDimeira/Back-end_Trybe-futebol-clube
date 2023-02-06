@@ -8,12 +8,39 @@ import TeamServiceClass from './MSC/services/team.service';
 
 import MiddlewareClass from './middleware/middleware.class';
 
+const loginService = new LoginServiceClass();
+const loginController = new LoginControllerClass(loginService);
+
 const teamService = new TeamServiceClass();
 const teamController = new TeamControllerClass(teamService);
 
-const loginService = new LoginServiceClass();
-const loginController = new LoginControllerClass(loginService);
 const middlewares = new MiddlewareClass();
+
+const login = (t: App) => {
+  t.app.post(
+    '/login',
+    middlewares.email,
+    middlewares.password,
+    loginController.login,
+  );
+
+  t.app.get(
+    '/login/validate',
+    loginController.adminLogin,
+  );
+};
+
+const teams = (t: App) => {
+  t.app.get(
+    '/teams',
+    teamController.getTeams,
+  );
+
+  t.app.get(
+    '/teams/:id',
+    teamController.getTeam,
+  );
+};
 
 class App {
   public app: express.Express;
@@ -26,22 +53,8 @@ class App {
     // Não remover essa rota
     this.app.get('/', (_req, res) => res.json({ ok: true }));
 
-    this.app.post(
-      '/login',
-      middlewares.email,
-      middlewares.password,
-      loginController.login,
-    );
-
-    this.app.get(
-      '/login/validate',
-      loginController.adminLogin,
-    );
-
-    this.app.get(
-      '/teams',
-      teamController.getTeams,
-    );
+    login(this);
+    teams(this);
   }
 
   private config(): void {
@@ -63,5 +76,4 @@ class App {
 
 export { App };
 
-// Essa segunda exportação é estratégica, e a execução dos testes de cobertura depende dela
 export const { app } = new App();
