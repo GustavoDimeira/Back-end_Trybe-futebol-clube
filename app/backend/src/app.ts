@@ -3,7 +3,13 @@ import * as express from 'express';
 import LoginControllerClass from './MSC/controllers/login.controller';
 import LoginServiceClass from './MSC/services/login.service';
 
+import TeamControllerClass from './MSC/controllers/team.controller';
+import TeamServiceClass from './MSC/services/team.service';
+
 import MiddlewareClass from './middleware/middleware.class';
+
+const teamService = new TeamServiceClass();
+const teamController = new TeamControllerClass(teamService);
 
 const loginService = new LoginServiceClass();
 const loginController = new LoginControllerClass(loginService);
@@ -30,6 +36,11 @@ class App {
     this.app.get(
       '/login/validate',
       loginController.adminLogin,
+    );
+
+    this.app.get(
+      '/teams',
+      teamController.getTeams,
     );
   }
 
