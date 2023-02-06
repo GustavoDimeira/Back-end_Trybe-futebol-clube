@@ -4,9 +4,9 @@ import Teams from '../../database/models/TeamModel';
 import { MatchesRes, TeamRes } from '../../interfaces/MSC';
 
 class MatchServiceClass {
-  public getTeamsMatches = async (matchStatus: string): Promise<MatchesRes[]> => {
-    const matches: (MatchesRes)[] = matchStatus === 'inProgress' ? (
-      await Matchs.findAll({ where: { inProgress: true } })
+  public getTeamsMatches = async (inProgress: string | undefined): Promise<MatchesRes[]> => {
+    const matches: (MatchesRes)[] = (inProgress) ? (
+      await Matchs.findAll({ where: { inProgress: (inProgress === 'true') } })
     ) : (
       await Matchs.findAll()
     );
