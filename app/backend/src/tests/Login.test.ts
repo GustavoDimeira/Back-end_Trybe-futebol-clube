@@ -3,8 +3,11 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
+import * as jwt from 'jsonwebtoken';
 import * as request from "supertest";
 import { app } from '../app';
+
+const secret = process.env.JWT_SECRET || 'jwt_secret';
 
 chai.use(chaiHttp);
 
@@ -40,30 +43,26 @@ describe('Login', () => {
     const result = await request(app).post("/login").send({ email: 'admin@admin.com', password: 'secret_admin'});
     expect(result.body.token).not.to.be.undefined;
   });
+
+  it('Validar a "role" como admin', async () => {
+    const token = jwt.sign(
+      { user: 'teste@teste.com', id: 3, role: 'admin' },
+      secret,
+      { expiresIn: '24h', algorithm: 'HS256' },
+    );
+
+    const result = await request(app).get("/login/validate").set('authorization', token);
+    expect(result.body.role).to.be.eq('admin');
+  });
+
+  it('Validar a "role" como none', async () => {
+    const token = jwt.sign(
+      { user: 'teste@teste.com', id: 3, role: 'none' },
+      secret,
+      { expiresIn: '24h', algorithm: 'HS256' },
+    );
+
+    const result = await request(app).get("/login/validate").set('authorization', token);
+    expect(result.body.message).to.be.eq('Error');
+  });
 });
-
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
-
-  // let chaiHttpResponse: Response;
-
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
-
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
