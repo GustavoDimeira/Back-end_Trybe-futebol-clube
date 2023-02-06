@@ -4,8 +4,12 @@ import Teams from '../../database/models/TeamModel';
 import { MatchesRes, TeamRes } from '../../interfaces/MSC';
 
 class MatchServiceClass {
-  public getTeamsMatches = async (): Promise<MatchesRes[]> => {
-    const matches: (MatchesRes)[] = await Matchs.findAll();
+  public getTeamsMatches = async (matchStatus: string): Promise<MatchesRes[]> => {
+    const matches: (MatchesRes)[] = matchStatus === 'inProgress' ? (
+      await Matchs.findAll({ where: { inProgress: true } })
+    ) : (
+      await Matchs.findAll()
+    );
     const teams: TeamRes[] = await Teams.findAll();
     matches.forEach((match, i) => {
       const homeTeam = teams.find((team) => team.id === match.homeTeamId);

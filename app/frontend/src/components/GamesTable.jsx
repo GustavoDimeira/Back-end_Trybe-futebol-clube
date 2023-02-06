@@ -19,10 +19,10 @@ const GamesTable = ({ currentFilter, isAdm }) => {
 
     switch (currentFilter) {
     case 'Em andamento':
-      getGames(`${endpoint}?inProgress=true`);
+      getGames(`${endpoint}?q=inProgress`);
       break;
     case 'Finalizado':
-      getGames(`${endpoint}?inProgress=false`);
+      getGames(`${endpoint}?q=notInProgress`);
       break;
     default:
       getGames(endpoint);
