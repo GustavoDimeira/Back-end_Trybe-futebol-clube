@@ -26,11 +26,11 @@ Match.init({
     allowNull: true,
     type: DataTypes.INTEGER,
   },
-  awaiTeamId: {
+  awayTeamId: {
     allowNull: true,
     type: DataTypes.INTEGER,
   },
-  awayTeamsGoals: {
+  awayTeamGoals: {
     allowNull: true,
     type: DataTypes.INTEGER,
   },
@@ -42,7 +42,7 @@ Match.init({
   underscored: true,
   sequelize: db,
   modelName: 'Matche',
-  tableName: 'Matches',
+  tableName: 'matches',
   timestamps: false,
 });
 

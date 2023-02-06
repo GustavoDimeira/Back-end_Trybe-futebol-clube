@@ -1,18 +1,22 @@
 import * as express from 'express';
 
-import LoginControllerClass from './MSC/controllers/login.controller';
 import LoginServiceClass from './MSC/services/login.service';
-
-import TeamControllerClass from './MSC/controllers/team.controller';
 import TeamServiceClass from './MSC/services/team.service';
+import MatchServiceClass from './MSC/services/match.service';
+
+import LoginControllerClass from './MSC/controllers/login.controller';
+import TeamControllerClass from './MSC/controllers/team.controller';
+import MatchControllerClass from './MSC/controllers/match.controller';
 
 import MiddlewareClass from './middleware/middleware.class';
 
 const loginService = new LoginServiceClass();
-const loginController = new LoginControllerClass(loginService);
-
 const teamService = new TeamServiceClass();
+const matchService = new MatchServiceClass();
+
+const loginController = new LoginControllerClass(loginService);
 const teamController = new TeamControllerClass(teamService);
+const matchController = new MatchControllerClass(matchService);
 
 const middlewares = new MiddlewareClass();
 
@@ -42,6 +46,13 @@ const teams = (t: App) => {
   );
 };
 
+const matches = (t: App) => {
+  t.app.get(
+    '/matches',
+    matchController.getTeamsMatches,
+  );
+};
+
 class App {
   public app: express.Express;
 
@@ -55,6 +66,7 @@ class App {
 
     login(this);
     teams(this);
+    matches(this);
   }
 
   private config(): void {
