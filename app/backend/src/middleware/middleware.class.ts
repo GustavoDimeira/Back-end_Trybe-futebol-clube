@@ -28,9 +28,9 @@ class MiddlewareClass {
       const { headers: { authorization } } = req;
       if (authorization) {
         if (jwt.verify(authorization, secret)) next();
-      } else res.status(401).json({ message: 'Acess deny' });
+      } else res.status(401).json({ message: 'Token must be a valid token' });
     } catch (_e) {
-      res.status(401).json({ message: 'Acess deny' });
+      res.status(401).json({ message: 'Token must be a valid token' });
     }
   };
 }
