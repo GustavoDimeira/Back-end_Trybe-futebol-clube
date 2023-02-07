@@ -36,6 +36,11 @@ class MatchServiceClass {
     } return { fail: true };
   };
 
+  public finishMatch = async (id: number): Promise<number> => {
+    const [matchUpdated] = await Matchs.update({ inProgress: 'false' }, { where: { id } });
+    return matchUpdated;
+  };
+
   private makeTeamResponse = (
     matches: MatchesRes[],
     match: MatchesRes,

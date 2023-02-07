@@ -32,6 +32,13 @@ class teamControllerClass {
       else res.status(200).json(newMatch);
     }
   };
+
+  public finishMatch = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const match: number = await this.matchService.finishMatch(Number(id));
+    if (match) res.status(200).json({ message: 'Finished' });
+    else res.status(403).json({ message: 'Already finished or notFound' });
+  };
 }
 
 export default teamControllerClass;

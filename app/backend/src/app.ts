@@ -54,8 +54,14 @@ const matches = (t: App) => {
 
   t.app.post(
     '/matches',
-    // middlewares.tokenValidation,
+    middlewares.tokenValidation,
     matchController.addTeamsMatche,
+  );
+
+  t.app.patch(
+    '/matches/:id/finish',
+    // middlewares.tokenValidation,
+    matchController.finishMatch,
   );
 };
 
