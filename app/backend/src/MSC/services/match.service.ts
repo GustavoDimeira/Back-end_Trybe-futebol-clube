@@ -40,6 +40,15 @@ class MatchServiceClass {
     return matchUpdated;
   };
 
+  public updateMatchScore = async (
+    id: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<number> => {
+    const [matchUpdated] = await Matchs.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return matchUpdated;
+  };
+
   private makeTeamResponse = (
     matches: MatchesRes[],
     match: MatchesRes,

@@ -47,21 +47,21 @@ const teams = (t: App) => {
 };
 
 const matches = (t: App) => {
-  t.app.get(
-    '/matches',
-    matchController.getTeamsMatches,
-  );
+  t.app.get('/matches', matchController.getTeamsMatches);
 
   t.app.post(
     '/matches',
-    middlewares.tokenValidation,
     matchController.addTeamsMatche,
   );
 
   t.app.patch(
     '/matches/:id/finish',
-    middlewares.tokenValidation,
     matchController.finishMatch,
+  );
+
+  t.app.patch(
+    '/matches/:id',
+    matchController.updateMatchScore,
   );
 };
 

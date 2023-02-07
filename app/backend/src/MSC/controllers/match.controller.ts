@@ -39,6 +39,16 @@ class teamControllerClass {
     if (match > 0) res.status(200).json({ message: 'Finished' });
     else res.status(403).json({ message: 'Already finished or notFound' });
   };
+
+  public updateMatchScore = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    const message = { awayTeamGoals, homeTeamGoals };
+    const match: number = await
+    this.matchService.updateMatchScore(Number(id), Number(homeTeamGoals), Number(awayTeamGoals));
+    if (match > 0) res.status(200).json({ message });
+    else res.status(403).json({ message: 'Already updated or notFound' });
+  };
 }
 
 export default teamControllerClass;
