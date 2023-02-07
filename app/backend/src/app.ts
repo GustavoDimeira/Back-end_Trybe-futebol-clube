@@ -77,6 +77,16 @@ const leaderBoard = (t: App) => {
     '/leaderboard',
     leaderBoradController.getBoard,
   );
+
+  t.app.get(
+    '/leaderboard/home',
+    leaderBoradController.getHomeBoard,
+  );
+
+  t.app.get(
+    '/leaderboard/away',
+    leaderBoradController.getAwayBoard,
+  );
 };
 
 class App {

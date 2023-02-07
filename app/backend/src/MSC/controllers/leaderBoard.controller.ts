@@ -9,35 +9,31 @@ import Teams from '../../database/models/TeamModel';
 class LeaderBoardControllerClass {
   constructor(private matchService: LeaderBoardServiceClass) {}
 
-  public getBoard = async (_req: Request, res: Response) => {
+  public getHomeBoard = async (_req: Request, res: Response): Promise<void> => {
+    this.getBoardInfos(res, 'home');
+  };
+
+  public getAwayBoard = async (_req: Request, res: Response): Promise<void> => {
+    this.getBoardInfos(res, 'away');
+  };
+
+  public getBoard = async (_req: Request, res: Response): Promise<void> => {
+    this.getBoardInfos(res);
+  };
+
+  private getBoardInfos = async (res: Response, homeOrAway?: string): Promise<void> => {
     const { teams, games } = await this.matchService.getBoard();
 
-    const leaderBoardList: LeaderBoardTeam[] = this.getList(teams, games);
-    leaderBoardList.sort((a, b) => {
-      if (b.totalPoints === a.totalPoints) {
-        if (b.totalVictories === a.totalVictories) {
-          if (b.goalsBalance === a.goalsBalance) {
-            if (b.goalsFavor === a.goalsFavor) {
-              return a.goalsOwn - b.goalsOwn;
-            } return b.goalsFavor - a.goalsFavor;
-          } return b.goalsBalance - a.goalsBalance;
-        } return b.totalVictories - a.totalVictories;
-      } return b.totalPoints - a.totalPoints;
-    });
+    const leaderBoardList: LeaderBoardTeam[] = this.getList(teams, games, homeOrAway);
+    this.sortBoard(leaderBoardList);
 
     res.status(200).json(leaderBoardList);
   };
 
-  private filterTeams = (team: Teams, game: Matchs) => {
-    const awayId = game.awayTeamId;
-    const homeId = game.homeTeamId;
-    return awayId === team.id || homeId === team.id;
-  };
-
-  private getList = (teams: Teams[], games: Matchs[]) => {
+  private getList = (teams: Teams[], games: Matchs[], homeOrAway?: string): LeaderBoardTeam[] => {
     const finalVariable: LeaderBoardTeam[] = [];
     teams.forEach((team) => {
-      const gamesEnded = games.filter((game) => this.filterTeams(team, game));
+      const gamesEnded = games.filter((game) => this.filterTeams(team, game, homeOrAway));
       const { wins, lost, drawns, goals, goalsOwn } = this.getTeamVariables(gamesEnded, team.id);
 
       finalVariable.push({
@@ -56,7 +52,15 @@ class LeaderBoardControllerClass {
     return finalVariable;
   };
 
-  private getTeamVariables = (gamesEnded: Matchs[], id: number) => {
+  private filterTeams = (team: Teams, game: Matchs, awayOrHome?: string): boolean => {
+    const awayId = !awayOrHome || awayOrHome === 'away' ? game.awayTeamId : -1;
+    const homeId = !awayOrHome || awayOrHome === 'home' ? game.homeTeamId : -1;
+    return awayId === team.id || homeId === team.id;
+  };
+
+  private getTeamVariables = (gamesEnded: Matchs[], id: number): {
+    wins: number, lost: number, drawns: number, goals: number, goalsOwn: number
+  } => {
     let wins = 0;
     let lost = 0;
     let drawns = 0;
@@ -72,6 +76,20 @@ class LeaderBoardControllerClass {
       else drawns += 1;
     });
     return { wins, lost, drawns, goals, goalsOwn };
+  };
+
+  private sortBoard = (leaderBoardList: LeaderBoardTeam[]): void => {
+    leaderBoardList.sort((a, b) => {
+      if (b.totalPoints === a.totalPoints) {
+        if (b.totalVictories === a.totalVictories) {
+          if (b.goalsBalance === a.goalsBalance) {
+            if (b.goalsFavor === a.goalsFavor) {
+              return a.goalsOwn - b.goalsOwn;
+            } return b.goalsFavor - a.goalsFavor;
+          } return b.goalsBalance - a.goalsBalance;
+        } return b.totalVictories - a.totalVictories;
+      } return b.totalPoints - a.totalPoints;
+    });
   };
 }
 

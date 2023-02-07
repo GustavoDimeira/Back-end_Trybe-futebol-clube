@@ -23,7 +23,7 @@ describe('Match', () => {
   describe('Listar matches', () => {
     it('Listar todas as matches', async () => {
       const result = await request(app).get("/matches").set('authorization', token);
-      expect(result.status).to.be.eq(200)
+      expect(result.status).to.be.eq(200);
     });
   
     it('Listar todas as matches encerradas', async () => {
