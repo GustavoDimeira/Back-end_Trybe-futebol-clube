@@ -3,20 +3,24 @@ import * as express from 'express';
 import LoginServiceClass from './MSC/services/login.service';
 import TeamServiceClass from './MSC/services/team.service';
 import MatchServiceClass from './MSC/services/match.service';
+import LeaderBoardServiceClass from './MSC/services/leaderBoard.service';
 
 import LoginControllerClass from './MSC/controllers/login.controller';
 import TeamControllerClass from './MSC/controllers/team.controller';
 import MatchControllerClass from './MSC/controllers/match.controller';
+import LeaderBoradControllerClass from './MSC/controllers/leaderBoard.controller';
 
 import MiddlewareClass from './middleware/middleware.class';
 
 const loginService = new LoginServiceClass();
 const teamService = new TeamServiceClass();
 const matchService = new MatchServiceClass();
+const leaderBoardService = new LeaderBoardServiceClass();
 
 const loginController = new LoginControllerClass(loginService);
 const teamController = new TeamControllerClass(teamService);
 const matchController = new MatchControllerClass(matchService);
+const leaderBoradController = new LeaderBoradControllerClass(leaderBoardService);
 
 const middlewares = new MiddlewareClass();
 
@@ -68,6 +72,13 @@ const matches = (t: App) => {
   );
 };
 
+const leaderBoard = (t: App) => {
+  t.app.get(
+    '/leaderboard',
+    leaderBoradController.getBoard,
+  );
+};
+
 class App {
   public app: express.Express;
 
@@ -82,6 +93,7 @@ class App {
     login(this);
     teams(this);
     matches(this);
+    leaderBoard(this);
   }
 
   private config(): void {
