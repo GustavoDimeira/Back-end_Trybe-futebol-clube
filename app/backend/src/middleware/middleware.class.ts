@@ -24,10 +24,14 @@ class MiddlewareClass {
   };
 
   public tokenValidation = (req: Request, res: Response, next: NextFunction): void => {
-    const { headers: { authorization } } = req;
-    if (authorization) {
-      if (jwt.verify(authorization, secret)) next();
-    } else res.status(401).json({ message: 'Token must be a valid token' });
+    try {
+      const { headers: { authorization } } = req;
+      if (authorization) {
+        if (jwt.verify(authorization, secret)) next();
+      } else res.status(401).json({ message: 'Acess deny' });
+    } catch (_e) {
+      res.status(401).json({ message: 'Acess deny' });
+    }
   };
 }
 

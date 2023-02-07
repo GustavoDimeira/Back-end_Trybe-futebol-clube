@@ -29,7 +29,7 @@ class teamControllerClass {
         awayTeamGoals,
       );
       if (newMatch.fail) res.status(404).json(unknow);
-      else res.status(200).json(newMatch.match);
+      else res.status(201).json(newMatch.match);
     }
   };
 
