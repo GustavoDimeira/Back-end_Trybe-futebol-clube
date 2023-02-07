@@ -29,14 +29,14 @@ class teamControllerClass {
         awayTeamGoals,
       );
       if (newMatch.fail) res.status(404).json(unknow);
-      else res.status(200).json(newMatch);
+      else res.status(200).json(newMatch.match);
     }
   };
 
   public finishMatch = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const match: number = await this.matchService.finishMatch(Number(id));
-    if (match) res.status(200).json({ message: 'Finished' });
+    if (match > 0) res.status(200).json({ message: 'Finished' });
     else res.status(403).json({ message: 'Already finished or notFound' });
   };
 }

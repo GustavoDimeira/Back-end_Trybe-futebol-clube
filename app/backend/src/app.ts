@@ -60,7 +60,7 @@ const matches = (t: App) => {
 
   t.app.patch(
     '/matches/:id/finish',
-    // middlewares.tokenValidation,
+    middlewares.tokenValidation,
     matchController.finishMatch,
   );
 };

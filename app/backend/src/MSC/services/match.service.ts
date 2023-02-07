@@ -26,12 +26,11 @@ class MatchServiceClass {
     awayTeamGoals: number,
   ): Promise<{ match?: MatchesRes, fail: boolean }> => {
     const team1 = await Teams.findOne({ where: { id: homeTeamId } });
-    const team2 = await Teams.findOne({ where: { id: homeTeamId } });
+    const team2 = await Teams.findOne({ where: { id: awayTeamId } });
     if (team1 && team2) {
       const match = await Matchs.create({
         homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals, inProgress: true,
       });
-      console.log(match);
       return { match, fail: false };
     } return { fail: true };
   };
